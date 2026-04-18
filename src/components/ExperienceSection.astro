@@ -1,0 +1,113 @@
+---
+import { getCollection, render } from 'astro:content';
+import TagList from './TagList.astro';
+
+const experiences = await getCollection('experience');
+experiences.sort((a, b) => a.data.order - b.data.order);
+
+const renderedExperiences = await Promise.all(
+  experiences.map(async (exp) => ({
+    data: exp.data,
+    Content: (await render(exp)).Content,
+  }))
+);
+---
+
+<section id="experience" class="section section-alt" data-testid="experience-section">
+  <div class="container">
+    <h2 class="section-heading">Experience</h2>
+    <div class="experience-list">
+      {renderedExperiences.map(({ data, Content }) => (
+        <div class="experience-card" data-testid="experience-card">
+          <div class="experience-header">
+            <div class="experience-meta">
+              <h3 class="experience-role">{data.role}</h3>
+              <p class="experience-company">{data.company}</p>
+            </div>
+            <span class="experience-date">{data.dateRange}</span>
+          </div>
+          <div class="experience-body">
+            <Content />
+          </div>
+          <TagList tags={data.tags ?? []} label="Skills used" bordered />
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .experience-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .experience-card {
+    background-color: var(--bg-card);
+    border: 1px solid color-mix(in srgb, var(--text-main) 8%, transparent);
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    transition: border-color var(--transition), background-color 0.3s ease;
+  }
+
+  .experience-card:hover {
+    border-color: color-mix(in srgb, var(--accent) 50%, transparent);
+  }
+
+  .experience-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .experience-role {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+  }
+
+  .experience-company {
+    font-size: 0.9rem;
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .experience-date {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    font-weight: 400;
+  }
+
+  .experience-body :global(ul) {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+
+  .experience-body :global(li) {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 0.925rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .experience-body :global(li)::before {
+    content: '›';
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 1.1rem;
+    line-height: 1.4;
+    flex-shrink: 0;
+  }
+
+
+</style>

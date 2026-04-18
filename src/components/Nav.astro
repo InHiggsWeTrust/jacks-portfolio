@@ -1,0 +1,145 @@
+---
+---
+
+<header class="nav" data-testid="site-nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo" aria-label="Home" data-testid="nav-logo">
+      <span class="logo-j">J</span><span class="logo-h">H</span>
+    </a>
+
+    <nav aria-label="Main navigation" data-testid="main-nav">
+      <ul class="nav-links">
+        <li><a href="/#experience">Experience</a></li>
+        <li><a href="/#projects">Projects</a></li>
+        <li><a href="/#blog">Blog</a></li>
+      </ul>
+    </nav>
+
+    <button
+      class="theme-toggle"
+      id="theme-toggle"
+      type="button"
+      aria-label="Toggle light/dark theme"
+      aria-pressed="false"
+      data-testid="theme-toggle"
+    >
+      <!-- Sun — shown in dark mode -->
+      <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="5"/>
+        <line x1="12" y1="1" x2="12" y2="3"/>
+        <line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/>
+        <line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+      <!-- Moon — shown in light mode -->
+      <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<script>
+  const btn = document.getElementById('theme-toggle') as HTMLButtonElement | null;
+
+  function syncPressed() {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    btn?.setAttribute('aria-pressed', String(isDark));
+  }
+
+  // Sync on load (theme may have been restored by the inline script in <head>)
+  syncPressed();
+
+  btn?.addEventListener('click', () => {
+    const html = document.documentElement;
+    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    syncPressed();
+  });
+</script>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background-color: color-mix(in srgb, var(--bg-primary) 80%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--text-main) 8%, transparent);
+    transition: background-color 0.3s ease;
+  }
+
+  .nav-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    height: var(--nav-height);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .nav-logo {
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .logo-j { color: var(--text-main); }
+  .logo-h { color: var(--accent); }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    transition: color var(--transition);
+  }
+
+  .nav-links a:hover {
+    color: var(--text-main);
+  }
+
+  .theme-toggle {
+    background: none;
+    border: 1px solid color-mix(in srgb, var(--text-main) 20%, transparent);
+    border-radius: 8px;
+    padding: 7px 8px;
+    cursor: pointer;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: border-color var(--transition), color var(--transition);
+  }
+
+  .theme-toggle:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  :global([data-theme='light']) .icon-sun { display: none; }
+  :global([data-theme='dark'])  .icon-moon { display: none; }
+
+  @media (max-width: 640px) {
+    .nav-links {
+      gap: 1.25rem;
+    }
+  }
+</style>

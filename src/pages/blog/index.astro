@@ -1,0 +1,140 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog');
+posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<Layout
+  title="Blog — Jack Higglesden"
+  description="Articles and thoughts on frontend engineering, design systems, and the web platform."
+>
+  <div class="page-wrap">
+    <header class="page-header">
+      <h1>Blog</h1>
+      <p>Articles and thoughts on frontend engineering, design systems, and the web platform.</p>
+    </header>
+
+    <div class="blog-grid">
+      {posts.map((post) => (
+        <a href={`/blog/${post.id}`} class="blog-card">
+          <div class="card-thumbnail">
+            {post.data.heroImage ? (
+              <img
+                src={post.data.heroImage}
+                alt={post.data.title}
+                class="card-img"
+                loading="lazy"
+              />
+            ) : (
+              <div class="card-gradient gradient-accent" aria-hidden="true" />
+            )}
+          </div>
+          <div class="card-body">
+            <time class="card-date" datetime={post.data.pubDate.toISOString()}>
+              {post.data.pubDate.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+            </time>
+            <h2 class="card-title">{post.data.title}</h2>
+            <p class="card-desc">{post.data.description}</p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .page-wrap {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 4rem 1.5rem;
+  }
+
+  .page-header {
+    margin-bottom: 3rem;
+  }
+
+  .page-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    margin-bottom: 0.5rem;
+  }
+
+  .page-header p {
+    font-size: 1rem;
+    color: var(--text-muted);
+    max-width: 540px;
+    line-height: 1.6;
+  }
+
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .blog-card {
+    display: block;
+    background-color: var(--bg-secondary);
+    border: 1px solid color-mix(in srgb, var(--text-main) 8%, transparent);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+    will-change: transform;
+  }
+
+  .blog-card:hover {
+    transform: translateY(-4px) scale(1.05);
+    border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+    box-shadow: 0 12px 32px color-mix(in srgb, var(--accent) 12%, transparent);
+  }
+
+  .card-thumbnail {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+  }
+
+  .card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .card-gradient {
+    width: 100%;
+    height: 100%;
+  }
+
+  .card-body {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .card-date {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--text-main);
+  }
+
+  .card-desc {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+</style>

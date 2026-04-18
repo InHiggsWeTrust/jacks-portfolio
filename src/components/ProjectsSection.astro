@@ -1,0 +1,108 @@
+---
+import { getCollection } from 'astro:content';
+import TagList from './TagList.astro';
+
+const projects = await getCollection('projects');
+---
+
+<section id="projects" class="section" data-testid="projects-section">
+  <div class="container">
+    <h2 class="section-heading">Projects</h2>
+    <div class="projects-grid">
+      {projects.map((project) => (
+        <a
+          href={project.data.githubUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="project-card"
+          data-testid="project-card"
+          aria-label={`View ${project.data.title} on GitHub`}
+        >
+          <div class="project-thumbnail">
+            {project.data.heroImage ? (
+              <img
+                src={project.data.heroImage}
+                alt={`Visual preview of ${project.data.title} showcasing ${project.data.description}`}
+                class="project-img"
+                loading="lazy"
+              />
+            ) : (
+              <div class="project-gradient gradient-accent" aria-hidden="true" />
+            )}
+          </div>
+          <div class="project-info">
+            <h3 class="project-title">{project.data.title}</h3>
+            <p class="project-desc">{project.data.description}</p>
+            <TagList tags={project.data.tags} />
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .project-card {
+    display: block;
+    background-color: var(--bg-card);
+    border: 1px solid color-mix(in srgb, var(--text-main) 8%, transparent);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition), background-color var(--transition);
+    will-change: transform;
+  }
+
+  .project-card:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 16px 40px color-mix(in srgb, var(--accent) 15%, transparent);
+    border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+  }
+
+  .project-thumbnail {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+  }
+
+  .project-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .project-gradient {
+    width: 100%;
+    height: 100%;
+  }
+
+  .project-info {
+    padding: 1.25rem;
+  }
+
+  .project-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+  }
+
+  .project-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 0.85rem;
+  }
+
+
+
+  @media (max-width: 768px) {
+    .projects-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

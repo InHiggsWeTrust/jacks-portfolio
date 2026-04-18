@@ -1,0 +1,39 @@
+---
+interface Props {
+  tags: string[];
+  label?: string;
+  bordered?: boolean;
+}
+
+const { tags, label = 'Technologies used', bordered = false } = Astro.props;
+---
+
+{tags.length > 0 && (
+  <div class:list={['tag-list', { 'tag-list--bordered': bordered }]} aria-label={label}>
+    {tags.map((tag) => <span class="tag">{tag}</span>)}
+  </div>
+)}
+
+<style>
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .tag-list--bordered {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid color-mix(in srgb, var(--text-main) 8%, transparent);
+  }
+
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.2rem 0.6rem;
+    border-radius: 100px;
+    background-color: color-mix(in srgb, var(--accent) 12%, var(--bg-card));
+    color: var(--accent);
+  }
+</style>

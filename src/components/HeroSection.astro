@@ -1,0 +1,138 @@
+---
+import { Image } from 'astro:assets';
+import profileImage from '../assets/profile.png';
+---
+
+<section class="hero" data-testid="hero-section">
+  <div class="container hero-inner">
+    <div class="hero-content">
+      <p class="hero-eyebrow animate-in delay-1">Hello, I'm</p>
+      <h1 class="hero-name animate-in delay-2">Jack Higglesden</h1>
+      <p class="hero-title animate-in delay-4">Senior Software Engineer</p>
+      <p class="hero-intro animate-in delay-5">
+        Engineering Polished Interfaces with Clean Code.
+      </p>
+      <div class="hero-ctas animate-in delay-6">
+        <a href="/#projects" class="btn btn-primary" data-testid="hero-cta-projects">View Projects</a>
+        <a href="/#experience" class="btn btn-secondary" data-testid="hero-cta-experience">Experience</a>
+      </div>
+    </div>
+
+    <div class="hero-image-wrap animate-in delay-3" data-testid="hero-image-wrap">
+      <div class="hero-image-glow" aria-hidden="true"></div>
+      <Image
+        src={profileImage}
+        alt="A professional yet approachable headshot of Jack Higglesden in a soft-rounded circle with a subtle purple accent glow."
+        class="hero-image"
+        width={280}
+        height={280}
+        loading="eager"
+        data-testid="hero-image"
+      />
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding: 2rem 0 2rem;
+  }
+
+  .hero-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+
+  .hero-content {
+    flex: 1;
+    max-width: 560px;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-name {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-title {
+    font-size: 1.125rem;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .hero-intro {
+    font-size: 1rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    @media (max-width: 768px) {
+      margin-bottom: 1rem;
+    }
+    max-width: 480px;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .hero-image-wrap {
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .hero-image-glow {
+    position: absolute;
+    inset: -12px;
+    border-radius: 36px;
+    background: radial-gradient(
+      ellipse at center,
+      color-mix(in srgb, var(--accent) 35%, transparent),
+      transparent 70%
+    );
+    filter: blur(24px);
+    z-index: 0;
+    transition: background 0.3s ease;
+  }
+
+  .hero-image {
+    position: relative;
+    z-index: 1;
+    width: 280px;
+    height: 280px;
+    object-fit: cover;
+    border-radius: 24px;
+    display: block;
+  }
+
+  @media (max-width: 768px) {
+    .hero-inner {
+      flex-direction: column-reverse;
+      align-items: center;
+      text-align: center;
+    }
+
+    .hero-intro {
+      max-width: 100%;
+    }
+
+    .hero-ctas {
+      justify-content: center;
+    }
+  }
+</style>
