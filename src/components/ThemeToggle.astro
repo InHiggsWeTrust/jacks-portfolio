@@ -1,0 +1,181 @@
+---
+---
+
+<!-- Hidden checkbox — the real interactive element for keyboard/a11y -->
+<input
+  type="checkbox"
+  id="theme-toggle"
+  class="theme-toggle-input"
+  aria-label="Toggle dark mode"
+  data-testid="theme-toggle"
+/>
+<!-- Visible pill track -->
+<label for="theme-toggle" class="theme-toggle-label" aria-hidden="true">
+  <span class="switch-handle">
+    <!-- Sun — shown in light mode -->
+    <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="5"/>
+      <line x1="12" y1="1" x2="12" y2="3"/>
+      <line x1="12" y1="21" x2="12" y2="23"/>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+      <line x1="1" y1="12" x2="3" y2="12"/>
+      <line x1="21" y1="12" x2="23" y2="12"/>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+    </svg>
+    <!-- Moon — shown in dark mode -->
+    <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </span>
+</label>
+
+<script>
+  const checkbox = document.getElementById('theme-toggle') as HTMLInputElement | null;
+
+  // Sync checkbox checked state with whatever theme the flash-prevention
+  // script already applied to <html data-theme="..."> before first paint.
+  function syncCheckbox() {
+    if (checkbox) {
+      checkbox.checked = document.documentElement.getAttribute('data-theme') === 'dark';
+    }
+  }
+
+  syncCheckbox();
+
+  checkbox?.addEventListener('change', () => {
+    const next = checkbox.checked ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+  });
+</script>
+
+<style>
+  /* Hide the checkbox visually but keep it in the tab order */
+  .theme-toggle-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Track — pill shape.
+     Base is always the night colour; the ::before day layer sits
+     on top and fades out on dark mode, cross-fading into night. */
+  .theme-toggle-label {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 54px;
+    height: 28px;
+    border-radius: 100px;
+    background-color: #1e293b;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  /* Day layer: lavender-violet → sky-blue gradient + cloud puffs.
+     Clouds sit on the RIGHT half (x ≥ 28px) — the area exposed
+     while the handle rests on the left in light mode.
+     Fades out to reveal the night base when dark mode activates. */
+  .theme-toggle-label::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 100px;
+    background-image:
+      /* Cloud 1 — upper right */
+      radial-gradient(5px 3px   at 38px 10px, rgba(255,255,255,0.90), transparent),
+      radial-gradient(7px 4px   at 44px  8px, rgba(255,255,255,0.90), transparent),
+      radial-gradient(5px 3px   at 50px 10px, rgba(255,255,255,0.85), transparent),
+      /* Cloud 2 — lower right */
+      radial-gradient(4px 3px   at 31px 20px, rgba(255,255,255,0.80), transparent),
+      radial-gradient(6px 3.5px at 37px 18px, rgba(255,255,255,0.85), transparent),
+      radial-gradient(4px 3px   at 43px 20px, rgba(255,255,255,0.80), transparent),
+      /* Sky gradient — violet-300 → sky-blue-300 */
+      linear-gradient(135deg, #c4b5fd, #93c5fd);
+    opacity: 1;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .theme-toggle-input:checked + .theme-toggle-label::before {
+    opacity: 0;
+  }
+
+  /* Stars — pure CSS dots via radial-gradient on a pseudo-element.
+     Positioned on the left side of the track, which is exposed once
+     the handle slides right into dark-mode position. */
+  .theme-toggle-label::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 100px;
+    background-image:
+      radial-gradient(1.5px 1.5px at  8px  7px, rgba(255,255,255,0.95), transparent),
+      radial-gradient(1px   1px   at 20px 18px, rgba(255,255,255,0.80), transparent),
+      radial-gradient(1px   1px   at 12px 22px, rgba(255,255,255,0.70), transparent),
+      radial-gradient(1.5px 1.5px at 24px  9px, rgba(255,255,255,0.90), transparent),
+      radial-gradient(1px   1px   at  5px 16px, rgba(255,255,255,0.60), transparent),
+      radial-gradient(1px   1px   at 17px 13px, rgba(255,255,255,0.50), transparent);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .theme-toggle-input:checked + .theme-toggle-label::after {
+    opacity: 1;
+  }
+
+  /* Focus ring — appears on the visible label when the hidden input is focused */
+  .theme-toggle-input:focus-visible + .theme-toggle-label {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 100px;
+  }
+
+  /* Thumb (handle) */
+  .switch-handle {
+    position: absolute;
+    left: 3px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Elastic bounce on slide */
+    transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+
+  /* Slide handle to the right when checked (dark mode) */
+  .theme-toggle-input:checked + .theme-toggle-label .switch-handle {
+    transform: translateX(26px);
+  }
+
+  /* Icons — stacked, cross-fade via opacity */
+  .icon-sun,
+  .icon-moon {
+    position: absolute;
+    transition: opacity 0.2s ease;
+  }
+
+  /* Amber sun, site-green moon */
+  .icon-sun  { color: #f59e0b; }
+  .icon-moon { color: #22c55e; }
+
+  /* Light mode (unchecked): show sun, hide moon */
+  .icon-sun  { opacity: 1; }
+  .icon-moon { opacity: 0; }
+
+  /* Dark mode (checked): show moon, hide sun */
+  .theme-toggle-input:checked + .theme-toggle-label .icon-sun  { opacity: 0; }
+  .theme-toggle-input:checked + .theme-toggle-label .icon-moon { opacity: 1; }
+</style>
