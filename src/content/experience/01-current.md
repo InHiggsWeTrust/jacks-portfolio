@@ -3,7 +3,7 @@ company: "Next"
 role: "Senior Software Engineer"
 dateRange: "Jul 2022 — Present"
 order: 1
-tags: ["React", "TypeScript", "LaunchDarkly", "Scrum", "SEO", "AI Tooling"]
+tags: ["React", "TypeScript","Next.js", "Material UI", "CI/CD Pipelines", "LaunchDarkly", "AI Integration", ]
 ---
 - Built AI tools reducing development time by 75% and preserving institutional knowledge.
 - Integrated LaunchDarkly to decouple feature releases from code deployment dependencies.
