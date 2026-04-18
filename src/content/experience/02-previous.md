@@ -1,9 +1,9 @@
 ---
 company: "FortressGB"
-role: "Fronted Web Developer"
+role: "Frontend Web Developer"
 dateRange: "Nov 2018 — Apr 2022"
-order: 2
-tags: ["React", "TypeScript", "RxJS", "NPM", "Azure DevOps", "Angular"]
+order: 2""
+tags: ["Angular", "TypeScript", "Bootstrap", "RxJS", "NPM", "Azure DevOps", "Git"]
 ---
 
 - Built Frontend for Fortress One, powering loyalty apps for 120+ global teams.
