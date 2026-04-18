@@ -25,11 +25,11 @@ const projects = defineCollection({
 
 const blog = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/blog' }),
-  schema: z.object({
+  schema: ({ image }) => z.object({
     title: z.string(),
     description: z.string(),
     pubDate: z.coerce.date(),
-    heroImage: z.string().optional(),
+    heroImage: image().optional(),
   }),
 });
 

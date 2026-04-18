@@ -2,6 +2,7 @@
 title: "The Moving Horizon: Reflections on 8 Years of Frontend Chaos"
 description: "Reflections on eight years of frontend evolution and the rising barriers for new developers."
 pubDate: 2026-04-18
+heroImage: ../../assets/MovingHorizonsImage.png
 ---
 
 ### The Lucky Break of 2018

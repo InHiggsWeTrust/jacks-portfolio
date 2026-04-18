@@ -2,7 +2,7 @@
 company: "FortressGB"
 role: "Frontend Web Developer"
 dateRange: "Nov 2018 — Apr 2022"
-order: 2""
+order: 2
 tags: ["Angular", "TypeScript", "Bootstrap", "RxJS", "NPM", "Azure DevOps", "Git"]
 ---
 
