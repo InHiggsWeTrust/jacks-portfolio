@@ -11,7 +11,6 @@ Personal portfolio and blog for Jack Higglesden, Senior Software Engineer. Built
 | Framework | [Astro 6](https://astro.build) — static output, zero client JS by default |
 | Language | TypeScript (strict mode) |
 | Styling | Vanilla CSS with custom properties — no utility framework |
-| Typography | [Inter Variable](https://fonts.google.com/specimen/Inter) + [JetBrains Mono](https://www.jetbrains.com/legalforms/fonts/) via `@fontsource` (self-hosted, no Google Fonts requests) |
 | Content | Astro Content Collections with Zod schemas (experience, projects, blog) |
 | Accessibility | WCAG 2.1 AA — semantic HTML, `aria-label`, `:focus-visible`, tested contrast ratios |
 | Theme | Flash-free dark/light mode via `localStorage` + `data-theme` attribute |
@@ -44,41 +43,6 @@ src/
 | `npm run dev` | Start dev server at `localhost:4321` |
 | `npm run build` | Build production site to `./dist/` |
 | `npm run preview` | Preview the production build locally |
-
-## Adding Content
-
-All content is Markdown-driven via Astro Content Collections.
-
-**New blog post** — create `src/content/blog/my-post.md`:
-```yaml
----
-title: "Post Title"
-description: "One-sentence summary."
-pubDate: 2026-04-18
----
-```
-
-**New project** — create `src/content/projects/my-project.md`:
-```yaml
----
-title: "Project Name"
-description: "What it does and why it matters."
-githubUrl: "https://github.com/username/repo"
-tags: ["React", "TypeScript"]
----
-```
-
-**New experience entry** — create `src/content/experience/03-company.md`:
-```yaml
----
-company: "Company Name"
-role: "Job Title"
-dateRange: "Jan 2024 — Present"
-order: 3
-tags: ["React", "Node.js"]
----
-- Bullet point achievements here
-```
 
 ## Design Decisions
 
