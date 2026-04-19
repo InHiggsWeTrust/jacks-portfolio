@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import TagList from './TagList.astro';
 
 const projects = await getCollection('projects');
@@ -20,10 +21,12 @@ const projects = await getCollection('projects');
         >
           <div class="project-thumbnail">
             {project.data.heroImage ? (
-              <img
+              <Image
                 src={project.data.heroImage}
                 alt={`Visual preview of ${project.data.title} showcasing ${project.data.description}`}
                 class="project-img"
+                width={600}
+                height={340}
                 loading="lazy"
               />
             ) : (
